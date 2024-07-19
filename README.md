@@ -1,25 +1,9 @@
-# 基于Gin、Gorm、Vue 实现的在线练习系统
 
-> 视频链接：https://www.bilibili.com/video/av339992531/
-> 
-> 演示地址：http://getcharzp.gitee.io/gin-gorm-oj
->
-> 后台语言：Golang、框架：Gin、GORM
-> 
-> 前台框架：Vue、ElementUI
-
-## 参考链接
-GOLANG下载网址： https://golang.google.cn/dl/
-
-参考文档 Module：https://www.kancloud.cn/aceld/golang/1958311
-
-GORM中文官网：https://gorm.io/zh_CN/docs/
-
-GIN中文官网：https://gin-gonic.com/zh-cn/docs/
 
 ## 整合 Swagger
 参考文档： https://github.com/swaggo/gin-swagger
 接口访问地址：http://localhost:8080/swagger/index.html
+
 ```text
 // GetProblemList
 // @Tags 公共方法
