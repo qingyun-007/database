@@ -1,18 +1,17 @@
 package service
 
 import (
-	"bytes"
 	"errors"
+	"getcharzp.cn/bytes"
 	"getcharzp.cn/define"
+	"getcharzp.cn/exec"
 	"getcharzp.cn/helper"
 	"getcharzp.cn/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os/exec"
 	"runtime"
 	"strconv"
 	"sync"
@@ -37,7 +36,6 @@ func GetSubmitList(c *gin.Context) {
 		return
 	}
 	page = (page - 1) * size
-
 	var count int64
 	list := make([]models.SubmitBasic, 0)
 
@@ -145,15 +143,12 @@ func Submit(c *gin.Context) {
 			testCase := testCase
 			go func() {
 				cmd := exec.Command("go", "run", path)
+				cmd.Case = *testCase
 				var out, stderr bytes.Buffer
-				cmd.Stderr = &stderr
-				cmd.Stdout = &out
-				stdinPipe, err := cmd.StdinPipe()
-				if err != nil {
-					log.Fatalln(err)
-				}
-				io.WriteString(stdinPipe, testCase.Input+"\n")
+				cmd.Stderr = &stderr // 提示
+				cmd.Stdout = &out    // 结果
 
+				// 执行代码
 				var bm runtime.MemStats
 				runtime.ReadMemStats(&bm)
 				if err := cmd.Run(); err != nil {
@@ -167,7 +162,7 @@ func Submit(c *gin.Context) {
 				var em runtime.MemStats
 				runtime.ReadMemStats(&em)
 
-				// 答案错误
+				// 答案错误 案例的答案 不等于 输出的答案
 				if testCase.Output != out.String() {
 					WA <- 1
 					return
